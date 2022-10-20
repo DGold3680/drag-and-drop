@@ -1,113 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D-N-D</title>
-    <style>
-        .dropzone {
-            display: inline-block;
-            width: 10vw;
-            height: 150px;
-            margin: 40px 250px;
-            margin-left: 0;
-            padding: 10px;
-          }
-        .content{
-            width: 100%;
-            height: 100%;
-            background: blue;
-        }
-          .yellow{
-            background:yellow ;
-          }
-          .empty{
-            background-color: purple;
-          }
-          .filled{
-            background-color: navy;
-          }
-          .dragstart{
-            background-color: blue;
-          }
-          .drag{
-            background-color: yellow;
-          }
-          .dragend{
-            background-color: blue;
-          }
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D-N-D</title>
+  <style>
 
+    section {
+      display: flex;
+    }
+    .console{
+      border-left:3px solid black ;
+      width:30vw;
+      height: 100vh;
+      padding-left: 20px;
+      color: navy;
+    }
+    .display{
+      width:70vw;
+      height: 100vh;
+      color: navy;
+    }
+    .dropzone {
+      display: inline-block;
+      width: 25%;
+      height: 200px;
+      margin: 25px;
+      margin-left: 0;
+      padding: 10px;
+      background-color: navy;
+    }
+    .content {
+      width: 100%;
+      height: 100%;
+      background: blue;
+    }
 
-
-    </style>
+  </style>
 </head>
+
 <body>
-    <div class="dropzone filled">
+  <section>
+    <div class="display">
+      <h1>Drag Events</h1>
+      <div class="dropzone">
         <div class="content" draggable="true"></div>
+      </div>
+      <div class="dropzone"></div>
+      <div class="dropzone"></div>
+      <div class="dropzone"></div>
     </div>
-    <div class="dropzone empty"></div>
-    <div class="dropzone empty"></div>
-    <div class="dropzone empty"></div>
 
     <div>
-    <span id="consoleDragstart">consoleDragstart</span>
-    <span id="consoleDrag">consoleDrag</span>
-    <span id="consoleDragend">consoleDragend</span>
-    <span id="consoleDragover">consoleDragover</span>
-    <span id="consoleDragenter">consoleDragenter</span>
-    <span id="consoleDragleave">consoleDragleave</span>
-    <span id="consoleDrop">consoleDrop</span>
-</div>
+      <div class="console">
+        <h2>Console</h2>
+        <div id="Dragstart"></div>
+        <div id="Drag"></div>
+        <div id="Dragend"></div>
+        <div id="Dragover"></div>
+        <div id="Dragenter"></div>
+        <div id="Dragleave"></div>
+        <div id="Drop"></div>
+      </div>
+    </div>
+  </section>
+  
+  <script>
+    const dropzone = document.querySelectorAll(".dropzone")
+    const content = document.querySelector(".content")
 
-    <script>
-        const dropzone=document.querySelectorAll(".dropzone")
-        const filled=document.querySelector(".filled")
-        const empty=document.querySelectorAll(".empty")
-        const content=document.querySelector(".content") 
-        const console=document.querySelector("#console")
+    let dragstart = 0
+    let drag = 0
+    let dragend = 0
+    let dragover = 0
+    let dragenter = 0
+    let dragleave = 0
+    let drop = 0
 
+    content.addEventListener('dragstart', (e) => {
+      console.log(e)
+      dragstart++
+      Dragstart.innerText = `Dragstart: ${dragstart}`
 
-
-        content.addEventListener('dragstart',(e)=>{
-        //    console.innerHTML+="<span>dragstart </span>"
-           
-        })
-        content.addEventListener('drag',(e)=>{
-            // console.innerHTML+="<span>drag </span>"
-            content.classList.add("drag")
-        })
-        content.addEventListener('dragend',(e)=>{
-            // console.innerHTML+="<span>dragend </span>"
-            content.classList.add("dragend")
-        })
-
-        let dragEnter=0
-        let dragLeave=0
-
-        empty.forEach((dropzone)=>{
-            dropzone.addEventListener("dragenter",(e)=>{
-                dragEnter++
-                consoleDragenter.innerText= `${dragEnter}`
-            })
-            dropzone.addEventListener("dragleave",(e)=>{
-                dragLeave++
-                consoleDragleave.innerText=`${dragLeave}`
-            })
-            dropzone.addEventListener("dragover",(e)=>{
-                e.preventDefault()
-                // console.innerHTML+="<span>dragover </span>"
-            })
-            dropzone.addEventListener("drop",(e)=>{
-                // e.preventDefault()
-                // console.innerHTML+="<span>drop </span>" 
-                dropzone.append(content)
-            })
-        })
-        
+    })
+    content.addEventListener('drag', (e) => {
+      drag++
+      Drag.innerText = `Drag: ${drag}`
+    })
+    content.addEventListener('dragend', (e) => {
+      console.log(e)
+      dragend++
+      Dragend.innerText = `Dragend: ${dragend}`
+    })
 
 
+    dropzone.forEach((dropzone) => {
+      dropzone.addEventListener("dragenter", (e) => {
+        dragenter++
+        Dragenter.innerText = `Dragenter:  ${dragenter}`
+      })
+      dropzone.addEventListener("dragleave", (e) => {
+        dragleave++
+        Dragleave.innerText = `Dragleave:  ${dragleave}`
+      })
+      dropzone.addEventListener("dragover", (e) => {
+        // necessary for drop event to fire
+        e.preventDefault()
+        dragover++
+        console.log(e)
+        Dragover.innerText = `Dragover:  ${dragover}`
+      })
+      dropzone.addEventListener("drop", (e) => {
+        drop++
+        Drop.innerText = `Drop: ${drop}`
+        dropzone.append(content)
+      })
+    })
 
-    </script>
+  </script>
 </body>
+
 </html>

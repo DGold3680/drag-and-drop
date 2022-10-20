@@ -28,4 +28,12 @@ At the end of this article you will:
 -Drop
 3. Demo on DragEvents (This demo will dmonstrate each drag event state)
 4. Data Transfer with dragEvents
-4. Summary
+5. Summary
+
+
+Different mime types list
+dragover necessary for drop event to fire
+transparency on drag
+inability to drag on chrome console
+inability to view data in dataTransferlist in console 
+Logging manually
