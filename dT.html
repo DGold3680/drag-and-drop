@@ -1,17 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D-N-D</title>
     <style>
-
-        .display{
+        .display {
             display: flex;
         }
-
         .dropzone {
             display: block;
             width: 25%;
@@ -20,30 +18,34 @@
             margin-left: 0;
             padding: 10px;
             background-color: navy;
+            overflow:auto;
+            color: aqua;
+            font-size: large;
         }
-
+        .container{
+            display: block;
+            width: 25%;
+        }
         .content {
             width: 80%;
             height: 25%;
             margin: 1em;
         }
-        .blue{
+        .blue {
             background: blue;
         }
-        .yellow{
+        .yellow {
             background: yellow;
         }
-        .red{
+        .red {
             background: red;
         }
-
     </style>
 </head>
-
 <body>
     <h1>Drag Events:Data Transfer</h1>
     <div class="display">
-        <div class="dropzone">
+        <div class="container">
             <div id="red" class="content red" draggable="true"></div>
             <div class="content blue" draggable="true"></div>
             <div class="content yellow" draggable="true"></div>
@@ -52,46 +54,48 @@
         <div class="dropzone"></div>
         <div class="dropzone"></div>
     </div>
-
     <script>
-
         const dropzone = document.querySelectorAll(".dropzone")
         const content = document.querySelectorAll(".content")
-
-        content.forEach((content)=>{
-        content.addEventListener('dragstart', (e) => {
-            const color=window.getComputedStyle(e.target).backgroundColor
-            let colorName=""
-            switch (color) {
-                case "rgb(255, 0, 0)": colorName="red"
-                break;
-                case "rgb(0, 0, 255)": colorName="blue"
-                break;
-                case "rgb(255, 255, 0)": colorName="yellow"
-                break;
-                    
-                default: colorName="none"
-                    break;
-            }
-            //Different mime types list
-            e.dataTransfer.setData("text/html", `<p> This box has a color of ${colorName}</p>`)
+        content.forEach((content) => {
+            content.addEventListener('dragstart', (e) => {
+                const color = window.getComputedStyle(e.target).backgroundColor
+                let colorName = ""
+                switch (color) {
+                    case "rgb(255, 0, 0)": colorName = "red"
+                        break;
+                    case "rgb(0, 0, 255)": colorName = "blue"
+                        break;
+                    case "rgb(255, 255, 0)": colorName = "yellow"
+                        break;
+                    default: colorName = "none"
+                        break;
+                }
+                //Different mime types list.SAVES TO ITEMS
+                e.dataTransfer.setData("text/html", `<p> This box has a color of ${colorName}</p>`)
+            })
         })
-    })
-
         dropzone.forEach((dropzone) => {
             dropzone.addEventListener("dragover", (e) => {
                 // necessary for drop event to fire
                 e.preventDefault()
-                
             })
+            
             dropzone.addEventListener("drop", (e) => {
-                console.log(e.dataTransfer)
+                //getdata() is only available here in the drop event in chrome
                 const data = e.dataTransfer.getData("text/html")
                 e.target.innerHTML+=data
+//a look into the dataTransferitems. items.kind is usually string or a file.
+//items.type is the MIME type.
+                for(let i=0;i<e.dataTransfer.items.length;i++){
+                    let items=e.dataTransfer.items[i]
+                     console.log(i,items.kind,items.type)
+                }
+//dataTransfer.items.length will increase each time you use setData to add more data. Since the data is being added to the dataTransferitemsList. 
+//This will not reflect on chrome as at the time of writing. 
+                console.log(e.dataTransfer,e.dataTransfer.items)
             })
         })
-
     </script>
 </body>
-
 </html>
